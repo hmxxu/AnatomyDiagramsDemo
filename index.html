@@ -2216,43 +2216,14 @@
           var h =
             navHTML("d") +
             '<header class="mast"><p class="eyebrow">OpenStax Anatomy and Physiology 2e</p><h1>Anatomy Diagrams Demo</h1>' +
-            '<p class="lede">Chapters 6 and 7 only. Pick a figure. Its labels are covered, and you drag each name back to the right spot.</p>' +
+            '<p class="lede">Chapters 6 and 7. Pick a figure. Its labels are covered, and you drag each name back to the right spot.</p>' +
             '<dl class="stats"><div><dt>Diagrams</dt><dd>' +
             nDia +
             "</dd></div><div><dt>Labels</dt><dd>" +
             nLab +
             "</dd></div></dl></header>";
-          // Chapter jump nav
-          h += '<nav class="ch-jump" aria-label="Jump to chapter"><span>Jump</span>';
-          DCH.forEach(function (ch) {
-            h += '<a href="#dch' + ch.n + '">' + ch.n + "</a>";
-          });
-          h += "</nav>";
-
-          DCH.forEach(function (ch) {
-            h +=
-              '<section class="chapter collapsed" id="dch' +
-              ch.n +
-              '"><div class="ch-head" data-act="ch-toggle" data-ch="' +
-              ch.n +
-              '"><span class="ch-num">Chapter ' +
-              ch.n +
-              "</span><h2>" +
-              esc(ch.title) +
-              '</h2><button type="button" class="ch-toggle" aria-expanded="false">Show</button></div>';
-            ch.sections.forEach(function (s) {
-              var list = DIAGRAMS.filter(function (d) {
-                return d.section === s.id;
-              });
-              h +=
-                '<div class="dsec"><span class="tag">' +
-                s.id +
-                "</span><h3>" +
-                esc(s.title) +
-                '</h3><span class="count">' +
-                list.length +
-                ' diagrams</span></div><div class="dgrid">';
-              list.forEach(function (d) {
+          h += '<div class="dgrid">';
+          DIAGRAMS.forEach(function (d) {
                 var r = store.dg[d.id],
                   meta = d.labels.length + " labels",
                   cls = "dmeta";
@@ -2284,11 +2255,8 @@
                   '">' +
                   meta +
                   "</span></button>";
-              });
-              h += "</div>";
-            });
-            h += "</section>";
           });
+          h += "</div>";
           return (
             h +
             '<div class="foot"><span>Progress is saved in this browser only.</span></div>'
