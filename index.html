@@ -1,0 +1,2786 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font:
+          14px -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: #fff;
+        color: #000;
+      }
+      img {
+        max-width: 100%;
+      }
+      [hidden]:not([hidden="until-found" i]) {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <title>Anatomy Drill</title>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@500&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Layout: single column, 44rem max. Chapters stack as bands of selectable sections; a sticky bar holds the Start button.
+   Palette is a histology slide: hematoxylin ink (blue-violet) on eosin-tinted paper, with eosin pink as the one accent. */
+      :root {
+        --bg: #faf4f8;
+        --surface: #ffffff;
+        --tint: #f3eaf4;
+        --fg: #241f45;
+        --muted: #625c88;
+        --line: #e2d6e6;
+        --accent: #bf3470;
+        --accent-fg: #ffffff;
+        --hema: #3f3b8f;
+        --ok: #17704f;
+        --ok-bg: #e1f3e9;
+        --bad: #a93428;
+        --bad-bg: #fbe7e4;
+        --f-display:
+          "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system,
+          "Segoe UI", sans-serif;
+        --f-body:
+          "Source Sans 3", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          sans-serif;
+        --f-mono:
+          "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #13112a;
+          --surface: #1c1a3a;
+          --tint: #25224a;
+          --fg: #eee9f8;
+          --muted: #a59fcb;
+          --line: #34305f;
+          --accent: #f2709f;
+          --accent-fg: #1f0a16;
+          --hema: #a29cf5;
+          --ok: #62d3a6;
+          --ok-bg: #11342a;
+          --bad: #ff9084;
+          --bad-bg: #3b1c22;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #13112a;
+        --surface: #1c1a3a;
+        --tint: #25224a;
+        --fg: #eee9f8;
+        --muted: #a59fcb;
+        --line: #34305f;
+        --accent: #f2709f;
+        --accent-fg: #1f0a16;
+        --hema: #a29cf5;
+        --ok: #62d3a6;
+        --ok-bg: #11342a;
+        --bad: #ff9084;
+        --bad-bg: #3b1c22;
+        color-scheme: dark;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--f-body);
+        font-size: 1.0625rem;
+        line-height: 1.5;
+        padding-block: 28px 0;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        min-height: 100vh;
+      }
+      .wrap {
+        max-width: 44rem;
+        margin: 0 auto;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h1,
+      h2,
+      h3,
+      .display {
+        font-family: var(--f-display);
+        text-wrap: balance;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      .mono {
+        font-family: var(--f-mono);
+        font-weight: 500;
+      }
+
+      /* ---------- home ---------- */
+      .mast {
+        display: grid;
+        gap: 10px;
+        padding-bottom: 22px;
+      }
+      .eyebrow {
+        font-family: var(--f-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .mast h1 {
+        font-size: clamp(2.3rem, 8vw, 3.4rem);
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--hema);
+      }
+      .lede {
+        color: var(--muted);
+        max-width: 34rem;
+      }
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 22px;
+        margin: 8px 0 0;
+        font-size: 0.95rem;
+      }
+      .stats div {
+        display: flex;
+        gap: 6px;
+        align-items: baseline;
+      }
+      .stats dt {
+        color: var(--muted);
+      }
+      .stats dd {
+        margin: 0;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+      .missed-btn {
+        justify-self: start;
+        margin-top: 4px;
+      }
+
+      .chapter {
+        margin-top: 26px;
+      }
+      .ch-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--hema);
+      }
+      .ch-num {
+        font-family: var(--f-mono);
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--accent);
+      }
+      .ch-head h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        flex: 1 1 14rem;
+        min-width: 0;
+      }
+      .ch-actions {
+        display: flex;
+        gap: 14px;
+      }
+      .link {
+        background: none;
+        border: 0;
+        padding: 6px 0;
+        color: var(--hema);
+        font-weight: 600;
+        font-size: 0.92rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .secs {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .secs li {
+        border-bottom: 1px solid var(--line);
+      }
+      .sec {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
+        gap: 4px 12px;
+        align-items: center;
+        padding: 12px 2px 6px;
+        cursor: pointer;
+      }
+      .sec input {
+        width: 1.2rem;
+        height: 1.2rem;
+        margin: 0;
+        accent-color: var(--accent);
+      }
+      .tag {
+        font-family: var(--f-mono);
+        font-weight: 500;
+        font-size: 0.92rem;
+        color: var(--hema);
+        background: var(--tint);
+        border-radius: 4px;
+        padding: 1px 7px;
+      }
+      .stitle {
+        min-width: 0;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .meter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 2px 12px 2.4rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-variant-numeric: tabular-nums;
+      }
+      .bar {
+        flex: 1;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--tint);
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--hema);
+        border-radius: 3px;
+      }
+
+      .startbar {
+        position: sticky;
+        bottom: 0;
+        z-index: 5;
+        margin-top: 26px;
+        background: var(--bg);
+        border-top: 1px solid var(--line);
+        padding-block: 12px calc(12px + env(safe-area-inset-bottom, 0px));
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        align-items: center;
+      }
+      .opts {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 14px;
+        flex: 1 1 14rem;
+        min-width: 0;
+      }
+      .opt-label {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .chips {
+        display: flex;
+        gap: 6px;
+      }
+      .chip {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: 999px;
+        padding: 4px 14px;
+        min-height: 36px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+      .chip[aria-pressed="true"] {
+        background: var(--hema);
+        border-color: var(--hema);
+        color: var(--bg);
+      }
+      .check {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.92rem;
+        cursor: pointer;
+      }
+      .check input {
+        accent-color: var(--accent);
+        width: 1.1rem;
+        height: 1.1rem;
+        margin: 0;
+      }
+      .btn {
+        border: 2px solid var(--accent);
+        background: var(--accent);
+        color: var(--accent-fg);
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px 20px;
+        min-height: 46px;
+        font-family: var(--f-display);
+        font-size: 1rem;
+      }
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .btn.ghost {
+        background: transparent;
+        color: var(--accent);
+      }
+      .btn.small {
+        min-height: 38px;
+        padding: 6px 14px;
+        font-size: 0.92rem;
+      }
+      .foot {
+        margin-top: 30px;
+        padding-bottom: 28px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        align-items: center;
+      }
+
+      /* ---------- quiz ---------- */
+      .qtop {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 12px;
+      }
+      .qcount {
+        font-family: var(--f-mono);
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .progress {
+        height: 6px;
+        background: var(--tint);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .progress i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+        transition: width 0.25s ease;
+      }
+      .qmeta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 12px;
+        margin-top: 26px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .qtext {
+        font-size: clamp(1.25rem, 4.2vw, 1.55rem);
+        line-height: 1.3;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+      .answers {
+        list-style: none;
+        margin: 20px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+      .ans {
+        width: 100%;
+        text-align: left;
+        display: grid;
+        grid-template-columns: 2rem 1fr auto;
+        gap: 12px;
+        align-items: start;
+        background: var(--surface);
+        border: 2px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 14px;
+        min-height: 54px;
+      }
+      .ans:hover:not(:disabled) {
+        border-color: var(--hema);
+      }
+      .ans .key {
+        font-family: var(--f-mono);
+        font-weight: 500;
+        font-size: 0.85rem;
+        color: var(--hema);
+        background: var(--tint);
+        border-radius: 5px;
+        text-align: center;
+        padding: 2px 0;
+        margin-top: 1px;
+      }
+      .ans .mark {
+        font-weight: 800;
+      }
+      .ans.picked {
+        border-color: var(--hema);
+        background: var(--tint);
+      }
+      .ans.right {
+        border-color: var(--ok);
+        background: var(--ok-bg);
+      }
+      .ans.right .mark {
+        color: var(--ok);
+      }
+      .ans.wrong {
+        border-color: var(--bad);
+        background: var(--bad-bg);
+      }
+      .ans.wrong .mark {
+        color: var(--bad);
+      }
+      .ans.missed {
+        border-style: dashed;
+        border-color: var(--ok);
+      }
+      .ans.missed .mark {
+        color: var(--ok);
+      }
+      .ans:disabled {
+        cursor: default;
+        color: var(--fg);
+      }
+      .feedback {
+        margin-top: 18px;
+        border-radius: 10px;
+        padding: 14px 16px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 6px solid var(--hema);
+      }
+      .feedback.ok {
+        border-left-color: var(--ok);
+      }
+      .feedback.no {
+        border-left-color: var(--bad);
+      }
+      .feedback h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      .feedback.ok h3 {
+        color: var(--ok);
+      }
+      .feedback.no h3 {
+        color: var(--bad);
+      }
+      .feedback p + p {
+        margin-top: 6px;
+      }
+      .qactions {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+        padding-bottom: 36px;
+      }
+
+      /* ---------- results ---------- */
+      .score {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 16px;
+        margin-top: 6px;
+      }
+      .score .big {
+        font-family: var(--f-display);
+        font-weight: 800;
+        font-size: clamp(3rem, 14vw, 4.6rem);
+        line-height: 1;
+        color: var(--hema);
+        font-variant-numeric: tabular-nums;
+      }
+      .score .pct {
+        font-family: var(--f-mono);
+        font-size: 1.1rem;
+        color: var(--muted);
+      }
+      .rows {
+        list-style: none;
+        margin: 14px 0 0;
+        padding: 0;
+      }
+      .rows li {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 4px 12px;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .rows .tag {
+        align-self: start;
+      }
+      .rows .bar {
+        grid-column: 2 / 4;
+      }
+      .rows .num {
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+      }
+      .h-section {
+        margin-top: 30px;
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+      .review {
+        list-style: none;
+        margin: 14px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 14px;
+      }
+      .review li {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+      }
+      .review .q {
+        font-weight: 600;
+        margin-top: 6px;
+      }
+      .review .yours {
+        color: var(--bad);
+        margin-top: 8px;
+      }
+      .review .corr {
+        color: var(--ok);
+        margin-top: 2px;
+      }
+      .review .why {
+        margin-top: 8px;
+        color: var(--muted);
+      }
+      .review .yours b,
+      .review .corr b {
+        font-weight: 700;
+      }
+      .sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      .empty {
+        margin-top: 20px;
+        padding: 14px 16px;
+        background: var(--tint);
+        border-radius: 10px;
+        color: var(--muted);
+      }
+
+      @media (max-width: 480px) {
+        .btn {
+          width: 100%;
+        }
+        .startbar .btn {
+          flex: 1 1 100%;
+        }
+        .qactions .btn {
+          flex: 1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .progress i {
+          transition: none;
+        }
+      }
+
+      /* ---------- chapter jump + collapse ---------- */
+      .ch-jump {
+        position: sticky;
+        top: 0;
+        z-index: 6;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+        padding: 8px 0;
+        margin: 0 0 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+      .ch-jump span {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-right: 4px;
+      }
+      .ch-jump a {
+        font-family: var(--f-mono);
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--tint);
+        color: var(--hema);
+        text-decoration: none;
+        border: 1px solid transparent;
+      }
+      .ch-jump a:hover {
+        border-color: var(--hema);
+      }
+      .chapter.collapsed .secs,
+      .chapter.collapsed .dsec,
+      .chapter.collapsed .dgrid,
+      .chapter.collapsed .ch-body {
+        display: none;
+      }
+      .ch-head {
+        cursor: pointer;
+      }
+      .ch-head .ch-toggle {
+        margin-left: auto;
+        font-size: 0.85rem;
+        color: var(--muted);
+        background: none;
+        border: 0;
+        padding: 4px 8px;
+      }
+
+
+      /* ---------- match game ---------- */
+      .match-sets {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .match-set {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+        cursor: pointer;
+        text-align: left;
+        font: inherit;
+        color: inherit;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .match-set:hover { border-color: var(--hema); }
+      .match-set strong { color: var(--hema); }
+      .match-board {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 16px;
+      }
+      @media (max-width: 640px) {
+        .match-board { grid-template-columns: 1fr; }
+      }
+      .match-col h3 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        margin: 0 0 8px;
+      }
+      .m-card {
+        background: var(--surface);
+        border: 2px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        cursor: grab;
+        user-select: none;
+        font-weight: 600;
+      }
+      .m-card.matched { border-color: var(--ok); background: var(--ok-bg); cursor: default; }
+      .m-card.wrong { border-color: var(--bad); background: var(--bad-bg); animation: shake 0.3s; }
+      @keyframes shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+      .m-zone {
+        border: 2px dashed var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        min-height: 52px;
+        background: var(--tint);
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .m-zone.over { border-color: var(--hema); background: #efe8f5; }
+      .m-zone.filled { border-style: solid; background: var(--surface); color: var(--fg); }
+      .m-zone.matched { border-color: var(--ok); background: var(--ok-bg); }
+
+      /* ---------- tabs ---------- */
+      .wrap.wide {
+        max-width: 62rem;
+      }
+      .tabs {
+        display: flex;
+        gap: 4px;
+        border-bottom: 1px solid var(--line);
+        margin: -8px 0 20px;
+      }
+      .tab {
+        border: 0;
+        background: none;
+        padding: 10px 16px;
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--muted);
+        border-bottom: 3px solid transparent;
+        margin-bottom: -1px;
+        min-height: 44px;
+      }
+      .tab:hover {
+        color: var(--fg);
+      }
+      .tab[aria-current="page"] {
+        color: var(--hema);
+        border-bottom-color: var(--accent);
+      }
+
+      /* ---------- diagram picker ---------- */
+      .dsec {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 10px;
+        margin-top: 16px;
+      }
+      .dsec h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      .dsec .count {
+        margin-left: auto;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .dgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .dcard {
+        display: grid;
+        gap: 6px;
+        align-content: start;
+        text-align: left;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px 8px 10px;
+      }
+      .dcard:hover {
+        border-color: var(--hema);
+      }
+      .dthumb {
+        display: block;
+        aspect-ratio: 4 / 3;
+        background: #ffffff;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+      }
+      .dthumb img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .dtitle {
+        font-weight: 700;
+        line-height: 1.2;
+        padding: 2px 2px 0;
+      }
+      .dmeta {
+        font-size: 0.83rem;
+        color: var(--muted);
+        padding: 0 2px;
+        line-height: 1.3;
+        font-variant-numeric: tabular-nums;
+      }
+      .dmeta.good {
+        color: var(--ok);
+      }
+
+      /* ---------- game ---------- */
+      .dg-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 6px 14px;
+      }
+      .dg-title {
+        font-family: var(--f-display);
+        font-size: clamp(1.7rem, 5.5vw, 2.4rem);
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--hema);
+        margin: 6px 0 4px;
+      }
+      .dg-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 12px;
+        align-items: center;
+        margin-top: 14px;
+      }
+      .dg-seg {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--surface);
+      }
+      .dg-seg span {
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        font-size: 0.85rem;
+        color: var(--muted);
+        border-right: 1px solid var(--line);
+      }
+      .dg-seg button {
+        border: 0;
+        background: transparent;
+        padding: 6px 14px;
+        min-height: 38px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+      .dg-seg button + button {
+        border-left: 1px solid var(--line);
+      }
+      .dg-seg button[aria-pressed="true"] {
+        background: var(--hema);
+        color: var(--bg);
+      }
+      .dg-spacer {
+        flex: 1 1 0;
+      }
+      .dg-score {
+        font-family: var(--f-mono);
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .dg-score b {
+        color: var(--fg);
+        font-weight: 500;
+      }
+      .dg-meter {
+        height: 6px;
+        border-radius: 3px;
+        background: var(--tint);
+        overflow: hidden;
+        margin-top: 10px;
+      }
+      .dg-meter i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--accent);
+        transition: width 0.25s ease;
+      }
+
+      .dg-board {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "tray" "stage";
+        align-items: start;
+        margin-top: 16px;
+      }
+      .dg-traywrap {
+        grid-area: tray;
+      }
+      .dg-stagewrap {
+        grid-area: stage;
+        min-width: 0;
+      }
+      @media (min-width: 62rem) {
+        .dg-board {
+          grid-template-columns: minmax(0, 1fr) 17.5rem;
+          grid-template-areas: "stage tray";
+        }
+        .dg-traywrap {
+          position: sticky;
+          top: 16px;
+        }
+        .tiles {
+          max-height: 62vh;
+          overflow-y: auto;
+        }
+      }
+      .dg-hint {
+        display: none;
+        font-size: 0.88rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      @media (max-width: 40rem) {
+        .dg-hint {
+          display: block;
+        }
+      }
+
+      .stage {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #ffffff;
+      }
+      .fig {
+        position: relative;
+        min-width: 560px;
+        container-type: inline-size;
+        background: #ffffff;
+      }
+      .fig img {
+        display: block;
+        width: 100%;
+        height: auto;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+      .zone {
+        -webkit-tap-highlight-color: transparent;
+      }
+      .zone {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        border: 1.5px dashed var(--hema);
+        border-radius: 3px;
+        background: #ffffff;
+        color: #15122e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        white-space: pre-line;
+        overflow: visible;
+        transition: border-color 0.12s ease;
+      }
+      .zone::after {
+        content: "";
+        position: absolute;
+        inset: -7px;
+      }
+      .zone.left {
+        justify-content: flex-start;
+        text-align: left;
+      }
+      .zone:hover:not(.placed):not(.shown),
+      .zone.hot {
+        border-style: solid;
+        border-color: var(--accent);
+        background: #f9dde9 !important;
+      }
+      .zone.target {
+        border-style: solid;
+        border-color: var(--accent);
+      }
+      .zone.placed {
+        border: 1.5px solid var(--ok);
+        cursor: default;
+      }
+      .zone.shown {
+        border: 1.5px dashed var(--muted);
+        color: var(--hema);
+        font-style: italic;
+        cursor: default;
+      }
+      .zone.bad {
+        border-color: var(--bad);
+        animation: shake 0.32s ease;
+      }
+      @keyframes shake {
+        20% {
+          transform: translateX(-4px);
+        }
+        50% {
+          transform: translateX(4px);
+        }
+        80% {
+          transform: translateX(-2px);
+        }
+      }
+
+      .tray {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface);
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+      .tray h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .tray h2 small {
+        font-family: var(--f-mono);
+        font-weight: 500;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .dg-sortrow {
+        display: flex;
+        gap: 16px;
+      }
+      .tiles {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      @media (min-width: 62rem) {
+        .tiles {
+          flex-direction: column;
+          flex-wrap: nowrap;
+        }
+      }
+      .tile {
+        width: 100%;
+        text-align: left;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 10px;
+        align-items: center;
+        background: var(--bg);
+        border: 1.5px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 12px;
+        min-height: 44px;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        line-height: 1.25;
+        font-weight: 600;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (max-width: 61.99rem) {
+        .tiles li {
+          flex: 1 1 14rem;
+        }
+      }
+      .tile::before {
+        content: "";
+        width: 10px;
+        height: 16px;
+        opacity: 0.55;
+        background: radial-gradient(
+            circle,
+            var(--hema) 1.4px,
+            transparent 1.7px
+          )
+          0 0 / 5px 5px;
+      }
+      .tile .x2 {
+        font-family: var(--f-mono);
+        font-weight: 500;
+        font-size: 0.8rem;
+        color: var(--accent);
+        background: var(--accent-soft, var(--tint));
+        border-radius: 4px;
+        padding: 0 6px;
+      }
+      .tile:hover {
+        border-color: var(--hema);
+      }
+      .tile[aria-pressed="true"] {
+        border-color: var(--accent);
+        background: var(--tint);
+      }
+      .tile.dragging {
+        opacity: 0.35;
+      }
+      .tile.bad {
+        border-color: var(--bad);
+        background: var(--bad-bg);
+        animation: shake 0.32s ease;
+      }
+      .dragghost {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 50;
+        pointer-events: none;
+        max-width: 17rem;
+        box-shadow: 0 8px 24px rgba(20, 10, 50, 0.28);
+        background: var(--surface);
+        border-color: var(--accent);
+      }
+      .tray-empty {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .dg-status {
+        min-height: 1.5em;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+      .dg-status.ok {
+        color: var(--ok);
+        font-weight: 600;
+      }
+      .dg-status.no {
+        color: var(--bad);
+        font-weight: 600;
+      }
+      .dg-done {
+        margin-top: 18px;
+        border: 1px solid var(--ok);
+        background: var(--ok-bg);
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: grid;
+        gap: 10px;
+      }
+      .dg-done h2 {
+        font-size: 1.15rem;
+        color: var(--ok);
+      }
+      .dg-done .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .credit {
+        margin-top: 14px;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .credit a {
+        color: var(--hema);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .zone.bad,
+        .tile.bad {
+          animation: none;
+        }
+        .dg-meter i {
+          transition: none;
+        }
+      }
+      [hidden].dg-done,
+      [hidden].tray-empty {
+        display: none !important;
+      }
+    </style>
+
+    <div class="wrap" id="app"></div>
+
+                                                                                                                                                                                <script src="diagrams/ch06-bone/bone-shapes/bone-shapes.js"></script>
+    <script src="diagrams/ch06-bone/fractures/fracture-types.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/overview/skeleton-overview.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-anterior.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-base.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-brain-case.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-cranial-fossae.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-ethmoid-medial.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-ethmoid.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-hyoid.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-lateral.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-mandible.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-maxilla.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-nasal-septum.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-orbit.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-posterior.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-sagittal.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-sinuses.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-sphenoid.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/skull/skull-temporal.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/thoracic-cage/rib.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/thoracic-cage/thoracic-cage.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/cervical-vertebrae.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/herniated-disc.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/intervertebral-disc.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/lumbar-vertebra.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/sacrum.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/thoracic-vertebra.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/vertebrae.js"></script>
+    <script src="diagrams/ch07-axial-skeleton/vertebral-column/vertebral-column.js"></script>
+                                                                                                                                    <script>
+      (function () {
+        "use strict";
+        var DIAGRAMS = window.DIAGRAMS || [];
+
+        /* ---------- storage (per viewer; page works without it) ---------- */
+        var KEY = "anatomy-drill-v1";
+        var memFallback = {};
+        function readStore() {
+          try {
+            var raw = localStorage.getItem(KEY);
+            return raw ? JSON.parse(raw) : {};
+          } catch (e) {
+            return memFallback;
+          }
+        }
+        var store = readStore();
+        store.stats = store.stats || {};
+        store.prefs = store.prefs || {};
+        function persist() {
+          try {
+            localStorage.setItem(KEY, JSON.stringify(store));
+          } catch (e) {
+            memFallback = store;
+          }
+        }
+
+        /* ---------- question bank ---------- */
+        function hid(s) {
+          var h = 5381;
+          for (var i = 0; i < s.length; i++)
+            h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+          return "q" + (h >>> 0).toString(36);
+        }
+        var QS = BANK.map(function (r) {
+          var sec = r[0],
+            text = r[1];
+          if (typeof r[2] === "boolean") {
+            return {
+              id: hid(sec + text),
+              sec: sec,
+              text: text,
+              type: "tf",
+              opts: [
+                { t: "True", ok: r[2] === true },
+                { t: "False", ok: r[2] === false },
+              ],
+              why: r[3],
+            };
+          }
+          var opts = r[2]
+            .map(function (t) {
+              return { t: t, ok: true };
+            })
+            .concat(
+              r[3].map(function (t) {
+                return { t: t, ok: false };
+              }),
+            );
+          return {
+            id: hid(sec + text),
+            sec: sec,
+            text: text,
+            type: r[2].length > 1 ? "multi" : "single",
+            opts: opts,
+            why: r[4],
+          };
+        });
+        var SEC = {};
+        SECTIONS.forEach(function (s) {
+          SEC[s.id] = s;
+        });
+
+        /* ---------- helpers ---------- */
+        function esc(s) {
+          return String(s)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+        function shuffle(a) {
+          a = a.slice();
+          for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1)),
+              t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+          }
+          return a;
+        }
+        function countFor(secId) {
+          return QS.filter(function (q) {
+            return q.sec === secId;
+          });
+        }
+        function mastered(secId) {
+          return countFor(secId).filter(function (q) {
+            return store.stats[q.id] && store.stats[q.id].last === true;
+          }).length;
+        }
+        function missedQs() {
+          return QS.filter(function (q) {
+            return store.stats[q.id] && store.stats[q.id].last === false;
+          });
+        }
+        function pct(n, d) {
+          return d ? Math.round((n / d) * 100) : 0;
+        }
+        var LETTERS = "ABCDE";
+
+        /* ---------- state ---------- */
+        var prefs = {
+          sel: Array.isArray(store.prefs.sel)
+            ? store.prefs.sel.filter(function (id) {
+                return SEC[id];
+              })
+            : SECTIONS.map(function (s) {
+                return s.id;
+              }),
+          count: store.prefs.count || 20,
+          shuffle: store.prefs.shuffle !== false,
+        };
+        // Sections added after a viewer saved their selection start out selected.
+        var known = Array.isArray(store.prefs.known)
+          ? store.prefs.known
+          : store.prefs.sel
+            ? SECTIONS.filter(function (s) {
+                return s.ch !== "V";
+              }).map(function (s) {
+                return s.id;
+              })
+            : [];
+        SECTIONS.forEach(function (s) {
+          if (known.indexOf(s.id) < 0 && prefs.sel.indexOf(s.id) < 0)
+            prefs.sel.push(s.id);
+        });
+        prefs.known = SECTIONS.map(function (s) {
+          return s.id;
+        });
+        // Remember which chapters are expanded across re-renders
+        var openChapters = {};
+
+        function savePrefs() {
+          store.prefs = prefs;
+          persist();
+        }
+        var view = "dhome";
+        var quiz = null;
+        var app = document.getElementById("app");
+
+        function poolSize() {
+          return QS.filter(function (q) {
+            return prefs.sel.indexOf(q.sec) >= 0;
+          }).length;
+        }
+
+        /* ---------- views ---------- */
+        function homeHTML() {
+          var answered = QS.filter(function (q) {
+            return store.stats[q.id];
+          }).length;
+          var right = QS.filter(function (q) {
+            return store.stats[q.id] && store.stats[q.id].last === true;
+          }).length;
+          var nMissed = missedQs().length;
+          var h =
+            navHTML("q") +
+            '<header class="mast">' +
+            '<p class="eyebrow">OpenStax Anatomy and Physiology 2e</p>' +
+            "<h1>Anatomy Drill</h1>" +
+            '<p class="lede">Choose the textbook sections you are studying, then answer multiple-choice questions. Every answer comes with an explanation.</p>' +
+            '<dl class="stats">' +
+            "<div><dt>Questions</dt><dd>" +
+            QS.length +
+            "</dd></div>" +
+            "<div><dt>Answered</dt><dd>" +
+            answered +
+            "</dd></div>" +
+            "<div><dt>Last attempt correct</dt><dd>" +
+            right +
+            "</dd></div>" +
+            "</dl>" +
+            (nMissed
+              ? '<button class="btn ghost small missed-btn" data-act="review-missed" data-key="missed">Review ' +
+                nMissed +
+                " missed question" +
+                (nMissed === 1 ? "" : "s") +
+                "</button>"
+              : "") +
+            "</header>";
+
+          // Chapter jump nav
+          h += '<nav class="ch-jump" aria-label="Jump to chapter"><span>Jump</span>';
+          CHAPTERS.forEach(function (ch) {
+            h += '<a href="#ch' + ch.n + '">' + (ch.n === "V" ? "Vocab" : ch.n) + "</a>";
+          });
+          h += "</nav>";
+
+          CHAPTERS.forEach(function (ch) {
+            var secs = SECTIONS.filter(function (s) {
+              return s.ch === ch.n;
+            });
+            h +=
+              '<section class="chapter' +
+              (openChapters[ch.n] ? "" : " collapsed") +
+              '" id="ch' +
+              ch.n +
+              '" aria-labelledby="chh' +
+              ch.n +
+              '">' +
+              '<div class="ch-head" data-act="ch-toggle" data-ch="' +
+              ch.n +
+              '"><span class="ch-num">' +
+              (ch.label || "Chapter " + ch.n) +
+              '</span><h2 id="chh' +
+              ch.n +
+              '">' +
+              esc(ch.title) +
+              "</h2>" +
+              '<button type="button" class="ch-toggle" aria-expanded="' +
+              (openChapters[ch.n] ? "true" : "false") +
+              '">' +
+              (openChapters[ch.n] ? "Hide" : "Show") +
+              "</button>" +
+              '<div class="ch-actions"><button class="link" data-act="ch-all" data-ch="' +
+              ch.n +
+              '" data-key="all' +
+              ch.n +
+              '">Select all</button>' +
+              '<button class="link" data-act="ch-none" data-ch="' +
+              ch.n +
+              '" data-key="none' +
+              ch.n +
+              '">Clear</button></div></div>' +
+              '<ul class="secs">';
+            secs.forEach(function (s) {
+              var total = countFor(s.id).length,
+                m = mastered(s.id);
+              h +=
+                '<li><label class="sec"><input type="checkbox" data-act="toggle" data-id="' +
+                s.id +
+                '" data-key="sec' +
+                s.id +
+                '"' +
+                (prefs.sel.indexOf(s.id) >= 0 ? " checked" : "") +
+                ">" +
+                '<span class="tag">' +
+                s.id +
+                '</span><span class="stitle">' +
+                esc(s.title) +
+                "</span></label>" +
+                '<div class="meter"><span class="bar" aria-hidden="true"><i style="width:' +
+                pct(m, total) +
+                '%"></i></span>' +
+                "<span>" +
+                m +
+                " of " +
+                total +
+                " correct last time</span></div></li>";
+            });
+            h += "</ul></section>";
+          });
+
+          var n = poolSize();
+          var run = prefs.count === "all" ? n : Math.min(prefs.count, n);
+          h +=
+            '<div class="startbar">' +
+            '<div class="opts"><span class="opt-label" id="cl">Questions</span>' +
+            '<div class="chips" role="group" aria-labelledby="cl">' +
+            [10, 20, "all"]
+              .map(function (c) {
+                return (
+                  '<button class="chip" data-act="count" data-n="' +
+                  c +
+                  '" data-key="c' +
+                  c +
+                  '" aria-pressed="' +
+                  (prefs.count === c) +
+                  '">' +
+                  (c === "all" ? "All" : c) +
+                  "</button>"
+                );
+              })
+              .join("") +
+            "</div>" +
+            '<button type="button" class="link" data-act="clear-all" data-key="clearall">Clear all</button>' +
+            '<label class="check"><input type="checkbox" data-act="shuffle" data-key="shuf"' +
+            (prefs.shuffle ? " checked" : "") +
+            "> Shuffle answers</label></div>" +
+            '<button class="btn" data-act="start" data-key="start"' +
+            (n ? "" : " disabled") +
+            ">" +
+            (n
+              ? "Start " + run + " question" + (run === 1 ? "" : "s")
+              : "Select a section") +
+            "</button></div>";
+
+          h +=
+            '<div class="foot"><span>Progress is saved in this browser only.</span>' +
+            (store.confirmReset
+              ? '<button class="link" data-act="reset-yes" data-key="ry">Yes, erase my progress</button><button class="link" data-act="reset-no" data-key="rn">Cancel</button>'
+              : '<button class="link" data-act="reset" data-key="reset">Reset progress</button>') +
+            "</div>";
+          return h;
+        }
+
+        function startQuiz(list) {
+          quiz = {
+            qs: list.map(function (q) {
+              var opts =
+                q.type === "tf" || !prefs.shuffle ? q.opts : shuffle(q.opts);
+              return {
+                id: q.id,
+                sec: q.sec,
+                text: q.text,
+                type: q.type,
+                opts: opts,
+                why: q.why,
+              };
+            }),
+            i: 0,
+            picked: [],
+            revealed: false,
+            log: [],
+          };
+          view = "quiz";
+          render();
+          window.scrollTo(0, 0);
+        }
+
+        function quizHTML() {
+          var q = quiz.qs[quiz.i],
+            n = quiz.qs.length;
+          var done = quiz.i + (quiz.revealed ? 1 : 0);
+          var kind =
+            q.type === "multi"
+              ? "Select all that apply"
+              : q.type === "tf"
+                ? "True or false"
+                : "Choose one";
+          var h =
+            '<div class="qtop"><button class="link" data-act="quit" data-key="quit">&larr; Chapters</button>' +
+            '<span class="qcount">Question ' +
+            (quiz.i + 1) +
+            " / " +
+            n +
+            "</span></div>" +
+            '<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="' +
+            n +
+            '" aria-valuenow="' +
+            done +
+            '"><i style="width:' +
+            pct(done, n) +
+            '%"></i></div>' +
+            '<div class="qmeta"><span class="tag">' +
+            q.sec +
+            "</span><span>" +
+            esc(SEC[q.sec].title) +
+            "</span><span>&middot; " +
+            kind +
+            "</span></div>" +
+            '<h2 class="qtext">' +
+            esc(q.text) +
+            "</h2>" +
+            '<ul class="answers">';
+          q.opts.forEach(function (o, i) {
+            var picked = quiz.picked.indexOf(i) >= 0,
+              cls = "ans",
+              mark = "";
+            if (quiz.revealed) {
+              if (picked && o.ok) {
+                cls += " right";
+                mark = "&#10003;";
+              } else if (picked && !o.ok) {
+                cls += " wrong";
+                mark = "&#10005;";
+              } else if (!picked && o.ok) {
+                cls += " missed";
+                mark = "&#10003;";
+              }
+            } else if (picked) cls += " picked";
+            var sr = quiz.revealed
+              ? picked && o.ok
+                ? "Correct, selected. "
+                : picked
+                  ? "Incorrect, selected. "
+                  : o.ok
+                    ? "Correct answer, not selected. "
+                    : ""
+              : "";
+            h +=
+              '<li><button class="' +
+              cls +
+              '" data-act="pick" data-i="' +
+              i +
+              '" data-key="a' +
+              i +
+              '"' +
+              (quiz.revealed ? " disabled" : "") +
+              (q.type === "multi" ? ' aria-pressed="' + picked + '"' : "") +
+              ">" +
+              '<span class="key" aria-hidden="true">' +
+              (q.type === "tf" ? i + 1 : LETTERS[i]) +
+              "</span>" +
+              '<span><span class="sr">' +
+              sr +
+              "</span>" +
+              esc(o.t) +
+              '</span><span class="mark" aria-hidden="true">' +
+              mark +
+              "</span></button></li>";
+          });
+          h += "</ul>";
+          if (quiz.revealed) {
+            var last = quiz.log[quiz.log.length - 1];
+            var head = last.ok ? "Correct" : "Not quite";
+            var detail = "";
+            if (!last.ok && q.type === "multi") {
+              var missed = q.opts.filter(function (o, i) {
+                return o.ok && quiz.picked.indexOf(i) < 0;
+              }).length;
+              var extra = q.opts.filter(function (o, i) {
+                return !o.ok && quiz.picked.indexOf(i) >= 0;
+              }).length;
+              var bits = [];
+              if (missed)
+                bits.push(
+                  missed +
+                    " correct answer" +
+                    (missed === 1 ? "" : "s") +
+                    " not selected",
+                );
+              if (extra)
+                bits.push(
+                  extra +
+                    " incorrect choice" +
+                    (extra === 1 ? "" : "s") +
+                    " selected",
+                );
+              detail =
+                "<p>" +
+                bits.join("; ") +
+                ". All of the options must match to score the question.</p>";
+            }
+            h +=
+              '<div class="feedback ' +
+              (last.ok ? "ok" : "no") +
+              '" role="status"><h3>' +
+              head +
+              "</h3>" +
+              detail +
+              "<p>" +
+              esc(q.why) +
+              "</p></div>" +
+              '<div class="qactions"><button class="btn" data-act="next" data-key="next">' +
+              (quiz.i === n - 1 ? "See results" : "Next question") +
+              "</button></div>";
+          } else if (q.type === "multi") {
+            h +=
+              '<div class="qactions"><button class="btn" data-act="check" data-key="check"' +
+              (quiz.picked.length ? "" : " disabled") +
+              ">Check answer</button></div>";
+          }
+          return h;
+        }
+
+        function resultsHTML() {
+          var n = quiz.log.length,
+            right = quiz.log.filter(function (l) {
+              return l.ok;
+            }).length;
+          var wrongs = quiz.log.filter(function (l) {
+            return !l.ok;
+          });
+          var bySec = {};
+          quiz.log.forEach(function (l) {
+            var b = bySec[l.q.sec] || (bySec[l.q.sec] = { r: 0, t: 0 });
+            b.t++;
+            if (l.ok) b.r++;
+          });
+          var h =
+            '<header class="mast"><p class="eyebrow">Quiz finished</p><h1>Results</h1></header>' +
+            '<div class="score"><span class="big">' +
+            right +
+            " / " +
+            n +
+            '</span><span class="pct">' +
+            pct(right, n) +
+            "% correct</span></div>" +
+            '<h2 class="h-section">By section</h2><ul class="rows">';
+          SECTIONS.filter(function (s) {
+            return bySec[s.id];
+          }).forEach(function (s) {
+            var b = bySec[s.id];
+            h +=
+              '<li><span class="tag">' +
+              s.id +
+              "</span><span>" +
+              esc(s.title) +
+              '</span><span class="num">' +
+              b.r +
+              " / " +
+              b.t +
+              "</span>" +
+              '<span class="bar" aria-hidden="true"><i style="width:' +
+              pct(b.r, b.t) +
+              '%"></i></span></li>';
+          });
+          h += "</ul>";
+          if (wrongs.length) {
+            h +=
+              '<h2 class="h-section">Review what you missed</h2><ul class="review">';
+            wrongs.forEach(function (l) {
+              var q = l.q;
+              var yours = l.picked.map(function (i) {
+                return q.opts[i].t;
+              });
+              var corr = q.opts
+                .filter(function (o) {
+                  return o.ok;
+                })
+                .map(function (o) {
+                  return o.t;
+                });
+              h +=
+                '<li><span class="tag">' +
+                q.sec +
+                '</span><p class="q">' +
+                esc(q.text) +
+                "</p>" +
+                '<p class="yours"><b>Your answer:</b> ' +
+                (yours.length ? esc(yours.join("; ")) : "none") +
+                "</p>" +
+                '<p class="corr"><b>Correct:</b> ' +
+                esc(corr.join("; ")) +
+                "</p>" +
+                '<p class="why">' +
+                esc(q.why) +
+                "</p></li>";
+            });
+            h += "</ul>";
+          } else {
+            h += '<p class="empty">No missed questions in this round.</p>';
+          }
+          h +=
+            '<div class="qactions" style="flex-wrap:wrap">' +
+            (wrongs.length
+              ? '<button class="btn" data-act="retry" data-key="retry">Retry ' +
+                wrongs.length +
+                " missed</button>"
+              : "") +
+            '<button class="btn ghost" data-act="home" data-key="home">Back to chapters</button></div>';
+          return h;
+        }
+
+        /* ---------- match games ---------- */
+        var MATCH_SETS = window.MATCH_SETS || [];
+
+        var currentMatch = null;
+
+        var matchSel = [];
+        var matchQueue = [];
+        var matchQueueIndex = 0;
+
+        function mhomeHTML() {
+          var chapters = {};
+          MATCH_SETS.forEach(function (s) {
+            var ch = s.chapter || 1;
+            if (!chapters[ch]) chapters[ch] = [];
+            chapters[ch].push(s);
+          });
+          var chNums = Object.keys(chapters).map(Number).sort(function (a, b) { return a - b; });
+          var h = navHTML("m") +
+            '<header class="mast"><p class="eyebrow">OpenStax Anatomy and Physiology 2e</p><h1>Match the Term</h1>' +
+            '<p class="lede">Select sets with the checkboxes, then start. Or open one set directly.</p></header>';
+          chNums.forEach(function (n) {
+            var sets = chapters[n];
+            var chTitle = n === 1 ? "An Introduction to the Human Body" : n === 4 ? "The Tissue Level of Organization" : n === 5 ? "The Integumentary System" : n === 6 ? "Bone Tissue and the Skeletal System" : "Chapter " + n;
+            h += '<section class="chapter" id="mch' + n + '">' +
+              '<h2 class="ch-h"><span>Chapter ' + n + '</span> ' + esc(chTitle) + '</h2>' +
+              '<div class="match-sets">';
+            sets.forEach(function (s) {
+              var checked = matchSel.indexOf(s.id) >= 0 ? " checked" : "";
+              h += '<div class="match-set" style="display:flex;align-items:center;gap:10px">' +
+                '<input type="checkbox" data-act="match-check" data-id="' + s.id + '"' + checked + ' style="width:18px;height:18px;flex-shrink:0">' +
+                '<button type="button" class="match-set" data-act="match-open" data-id="' + s.id + '" style="flex:1;border:none;background:transparent;padding:0;text-align:left">' +
+                '<strong>' + esc(s.title) + '</strong><br><span style="color:var(--muted);font-size:0.9rem">' + s.pairs.length + ' pairs</span></button></div>';
+            });
+            h += '</div></section>';
+          });
+          h += '<div class="actions" style="margin-top:20px">' +
+            '<button type="button" class="btn" data-act="match-start-sel"' + (matchSel.length ? "" : " disabled") + '>Start selected (' + matchSel.length + ')</button>' +
+            '<button type="button" class="btn ghost" data-act="match-clear">Clear</button></div>';
+          return h;
+        }
+
+        function matchHTML() {
+          if (!currentMatch) return mhomeHTML();
+          var set = MATCH_SETS.filter(function (s) { return s.id === currentMatch; })[0];
+          if (!set) return mhomeHTML();
+          var progress = matchQueue.length > 1 ? " (" + (matchQueueIndex + 1) + " of " + matchQueue.length + ")" : "";
+          var h = navHTML("m") +
+            '<div class="qtop"><button class="link" data-act="match-back">&larr; Topics</button>' +
+            '<h2 style="margin:0;font-size:1.3rem">' + esc(set.title) + progress + '</h2></div>' +
+            '<div class="status" id="m-status">0 of ' + set.pairs.length + ' matched</div>' +
+            '<div class="match-board">' +
+            '<div class="match-col"><h3>Terms</h3><div id="m-terms"></div></div>' +
+            '<div class="match-col"><h3>Definitions</h3><div id="m-defs"></div></div>' +
+            '</div>' +
+            '<div class="actions" style="margin-top:16px">' +
+            '<button type="button" class="btn ghost" data-act="match-reset">New round</button>' +
+            '<button type="button" class="btn ghost" data-act="match-show">Show answers</button>';
+          if (matchQueue.length > 1) {
+            var isLast = matchQueueIndex >= matchQueue.length - 1;
+            h += '<button type="button" class="btn" data-act="match-next">' + (isLast ? "Finish" : "Next set") + '</button>';
+          }
+          h += '</div>';
+          return h;
+        }
+
+        function initMatchBoard() {
+          if (view !== "match" || !currentMatch) return;
+          var set = MATCH_SETS.filter(function (s) { return s.id === currentMatch; })[0];
+          if (!set) return;
+          var termsEl = document.getElementById("m-terms");
+          var defsEl = document.getElementById("m-defs");
+          if (!termsEl || !defsEl) return;
+          termsEl.innerHTML = "";
+          defsEl.innerHTML = "";
+          var terms = shuffle(set.pairs.slice());
+          var defs = shuffle(set.pairs.slice());
+          terms.forEach(function (p) {
+            var card = document.createElement("div");
+            card.className = "m-card";
+            card.draggable = true;
+            card.dataset.term = p[0];
+            card.textContent = p[0];
+            card.addEventListener("dragstart", function (e) {
+              if (card.classList.contains("matched")) { e.preventDefault(); return; }
+              e.dataTransfer.setData("text/plain", p[0]);
+            });
+            termsEl.appendChild(card);
+          });
+          defs.forEach(function (p) {
+            var zone = document.createElement("div");
+            zone.className = "m-zone";
+            zone.dataset.correct = p[0];
+            zone.dataset.def = p[1];
+            zone.textContent = p[1];
+            zone.addEventListener("dragover", function (e) { e.preventDefault(); if (!zone.classList.contains("filled")) zone.classList.add("over"); });
+            zone.addEventListener("dragleave", function () { zone.classList.remove("over"); });
+            zone.addEventListener("drop", function (e) {
+              e.preventDefault();
+              zone.classList.remove("over");
+              if (zone.classList.contains("filled")) return;
+              var term = e.dataTransfer.getData("text/plain");
+              var card = document.querySelector('.m-card[data-term="' + CSS.escape(term) + '"]');
+              if (!card || card.classList.contains("matched")) return;
+              if (term === zone.dataset.correct) {
+                card.classList.add("matched");
+                card.draggable = false;
+                zone.classList.add("filled", "matched");
+                zone.innerHTML = "<strong>" + term + "</strong><br><span style='font-weight:400;color:var(--muted)'>" + zone.dataset.def + "</span>";
+                var done = document.querySelectorAll(".m-card.matched").length;
+                var st = document.getElementById("m-status");
+                if (st) st.textContent = done + " of " + set.pairs.length + " matched" + (done === set.pairs.length ? " — done!" : "");
+              } else {
+                card.classList.add("wrong");
+                setTimeout(function () { card.classList.remove("wrong"); }, 350);
+              }
+            });
+            defsEl.appendChild(zone);
+          });
+        }
+
+                function render() {
+          var activeKey =
+            document.activeElement && document.activeElement.dataset
+              ? document.activeElement.dataset.key
+              : null;
+          app.classList.toggle("wide", view === "dgame");
+          app.innerHTML =
+            view === "home"
+              ? homeHTML()
+              : view === "dhome"
+                ? dhomeHTML()
+                : view === "mhome"
+                  ? mhomeHTML()
+                  : view === "match"
+                    ? matchHTML()
+                    : view === "quiz"
+                      ? quizHTML()
+                      : resultsHTML();
+          var target = null;
+          if (view === "quiz" && quiz.revealed)
+            target = app.querySelector('[data-key="next"]');
+          if (!target && activeKey)
+            target = app.querySelector('[data-key="' + activeKey + '"]');
+          if (target && !target.disabled) target.focus({ preventScroll: true });
+          if (view === "match") setTimeout(initMatchBoard, 0);
+        }
+
+        /* ---------- actions ---------- */
+        function reveal() {
+          var q = quiz.qs[quiz.i];
+          var ok = q.opts.every(function (o, i) {
+            return o.ok === quiz.picked.indexOf(i) >= 0;
+          });
+          quiz.revealed = true;
+          quiz.log.push({ q: q, ok: ok, picked: quiz.picked.slice() });
+          var prev = store.stats[q.id] || { right: 0, wrong: 0 };
+          store.stats[q.id] = {
+            last: ok,
+            right: prev.right + (ok ? 1 : 0),
+            wrong: prev.wrong + (ok ? 0 : 1),
+          };
+          persist();
+          render();
+        }
+
+        function pickOption(i) {
+          if (!quiz || quiz.revealed) return;
+          var q = quiz.qs[quiz.i];
+          if (i < 0 || i >= q.opts.length) return;
+          if (q.type === "multi") {
+            var at = quiz.picked.indexOf(i);
+            if (at >= 0) quiz.picked.splice(at, 1);
+            else quiz.picked.push(i);
+            render();
+          } else {
+            quiz.picked = [i];
+            reveal();
+          }
+        }
+
+        function nextQuestion() {
+          if (quiz.i < quiz.qs.length - 1) {
+            quiz.i++;
+            quiz.picked = [];
+            quiz.revealed = false;
+            view = "quiz";
+            render();
+            window.scrollTo(0, 0);
+          } else {
+            view = "results";
+            render();
+            window.scrollTo(0, 0);
+          }
+        }
+
+        // Expand chapter when jumping via the nav
+        app.addEventListener("click", function (e) {
+          var a = e.target.closest(".ch-jump a");
+          if (!a) return;
+          var id = a.getAttribute("href").slice(1);
+          var target = document.getElementById(id);
+          if (target && target.classList.contains("collapsed")) {
+            target.classList.remove("collapsed");
+            var chId = id.replace(/^d?ch/, "");
+            openChapters[chId] = true;
+            var btn = target.querySelector(".ch-toggle");
+            if (btn) {
+              btn.textContent = "Hide";
+              btn.setAttribute("aria-expanded", "true");
+            }
+          }
+        });
+
+        app.addEventListener("click", function (e) {
+          var el = e.target.closest("[data-act]");
+          if (!el || el.disabled) return;
+          var act = el.dataset.act;
+          if (act === "ch-toggle") {
+            var sec = el.closest(".chapter");
+            if (!sec) return;
+            // Don't toggle if the click came from a control inside the header
+            if (e.target.closest("[data-act='ch-all'], [data-act='ch-none'], input, .ch-actions")) return;
+            var collapsed = sec.classList.toggle("collapsed");
+            var chId = el.dataset.ch || sec.id.replace(/^d?ch/, "");
+            openChapters[chId] = !collapsed;
+            var btn = sec.querySelector(".ch-toggle");
+            if (btn) {
+              btn.textContent = collapsed ? "Show" : "Hide";
+              btn.setAttribute("aria-expanded", String(!collapsed));
+            }
+            return;
+          } else if (act === "toggle") {
+            var id = el.dataset.id,
+              at = prefs.sel.indexOf(id);
+            if (el.checked && at < 0) prefs.sel.push(id);
+            if (!el.checked && at >= 0) prefs.sel.splice(at, 1);
+            savePrefs();
+            render();
+          } else if (act === "clear-all") {
+            prefs.sel = [];
+            savePrefs();
+            render();
+          } else if (act === "ch-all" || act === "ch-none") {
+            var ids = SECTIONS.filter(function (s) {
+              return String(s.ch) === el.dataset.ch;
+            }).map(function (s) {
+              return s.id;
+            });
+            prefs.sel = prefs.sel.filter(function (id) {
+              return ids.indexOf(id) < 0;
+            });
+            if (act === "ch-all") prefs.sel = prefs.sel.concat(ids);
+            savePrefs();
+            render();
+          } else if (act === "count") {
+            prefs.count = el.dataset.n === "all" ? "all" : Number(el.dataset.n);
+            savePrefs();
+            render();
+          } else if (act === "shuffle") {
+            prefs.shuffle = el.checked;
+            savePrefs();
+            render();
+          } else if (act === "start") {
+            var pool = QS.filter(function (q) {
+              return prefs.sel.indexOf(q.sec) >= 0;
+            });
+            pool = shuffle(pool);
+            if (prefs.count !== "all") pool = pool.slice(0, prefs.count);
+            if (pool.length) startQuiz(pool);
+          } else if (act === "review-missed") {
+            startQuiz(shuffle(missedQs()));
+          } else if (act === "reset") {
+            store.confirmReset = true;
+            render();
+          } else if (act === "reset-no") {
+            store.confirmReset = false;
+            render();
+          } else if (act === "reset-yes") {
+            store.stats = {};
+            store.confirmReset = false;
+            persist();
+            render();
+          } else if (act === "pick") {
+            pickOption(Number(el.dataset.i));
+          } else if (act === "check") {
+            if (quiz.picked.length) reveal();
+          } else if (act === "next") {
+            nextQuestion();
+          } else if (act === "quit") {
+            view = "dhome";
+            quiz = null;
+            render();
+            window.scrollTo(0, 0);
+          } else if (act === "retry") {
+            var again = quiz.log
+              .filter(function (l) {
+                return !l.ok;
+              })
+              .map(function (l) {
+                return l.q;
+              });
+            startQuiz(shuffle(again));
+          } else if (act === "home") {
+            view = "dhome";
+            quiz = null;
+            render();
+            window.scrollTo(0, 0);
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (view !== "quiz" || !quiz || e.metaKey || e.ctrlKey || e.altKey)
+            return;
+          var t = e.target;
+          if (t && t.tagName === "INPUT") return;
+          var q = quiz.qs[quiz.i];
+          var k = e.key.toLowerCase(),
+            idx = -1;
+          if (k >= "1" && k <= "5") idx = Number(k) - 1;
+          else if (k >= "a" && k <= "e" && q.type !== "tf")
+            idx = k.charCodeAt(0) - 97;
+          if (idx >= 0 && !quiz.revealed) {
+            e.preventDefault();
+            pickOption(idx);
+            return;
+          }
+          if (e.key === "Enter" && t === document.body) {
+            e.preventDefault();
+            if (quiz.revealed) nextQuestion();
+            else if (q.type === "multi" && quiz.picked.length) reveal();
+          }
+        });
+
+        /* ================= Diagrams tab ================= */
+        var wrapEl = document.querySelector(".wrap");
+        var DCH = [
+          {
+            n: 6,
+            title: "Bone Tissue and the Skeletal System",
+            sections: [
+              { id: "6.2", title: "Bone Classification" },
+              { id: "6.5", title: "Fractures" },
+            ],
+          },
+          {
+            n: 7,
+            title: "The Axial Skeleton",
+            sections: [
+              { id: "7.0", title: "Overview" },
+              { id: "7.1", title: "The Skull" },
+              { id: "7.2", title: "The Vertebral Column" },
+              { id: "7.3", title: "The Thoracic Cage" },
+            ],
+          },
+        ];
+        var DBY = {};
+        DIAGRAMS.forEach(function (d) {
+          DBY[d.id] = d;
+        });
+        store.dg = store.dg || {};
+        // Always use all labels
+        prefs.dgCount = "all";
+        var DCREDIT =
+          'Diagram: <a href="https://openstax.org/details/books/anatomy-and-physiology-2e" target="_blank" rel="noopener">OpenStax Anatomy and Physiology 2e</a>, CC BY 4.0. Label text covered for practice.';
+
+        function navHTML(active) {
+          return (
+            '<nav class="tabs" aria-label="Study tools">' +
+            '<button type="button" class="tab" data-act="tab" data-tab="d" data-key="td" aria-current="page"' +
+            ">Diagrams</button></nav>"
+          );
+        }
+        function sectionTitle(id) {
+          for (var i = 0; i < DCH.length; i++)
+            for (var j = 0; j < DCH[i].sections.length; j++)
+              if (DCH[i].sections[j].id === id) return DCH[i].sections[j].title;
+          return "";
+        }
+
+        function dhomeHTML() {
+          var nDia = DIAGRAMS.length,
+            nLab = DIAGRAMS.reduce(function (s, d) {
+              return s + d.labels.length;
+            }, 0);
+          var h =
+            navHTML("d") +
+            '<header class="mast"><p class="eyebrow">OpenStax Anatomy and Physiology 2e</p><h1>Anatomy Diagrams Demo</h1>' +
+            '<p class="lede">Chapters 6 and 7 only. Pick a figure. Its labels are covered, and you drag each name back to the right spot.</p>' +
+            '<dl class="stats"><div><dt>Diagrams</dt><dd>' +
+            nDia +
+            "</dd></div><div><dt>Labels</dt><dd>" +
+            nLab +
+            "</dd></div></dl></header>";
+          // Chapter jump nav
+          h += '<nav class="ch-jump" aria-label="Jump to chapter"><span>Jump</span>';
+          DCH.forEach(function (ch) {
+            h += '<a href="#dch' + ch.n + '">' + ch.n + "</a>";
+          });
+          h += "</nav>";
+
+          DCH.forEach(function (ch) {
+            h +=
+              '<section class="chapter collapsed" id="dch' +
+              ch.n +
+              '"><div class="ch-head" data-act="ch-toggle" data-ch="' +
+              ch.n +
+              '"><span class="ch-num">Chapter ' +
+              ch.n +
+              "</span><h2>" +
+              esc(ch.title) +
+              '</h2><button type="button" class="ch-toggle" aria-expanded="false">Show</button></div>';
+            ch.sections.forEach(function (s) {
+              var list = DIAGRAMS.filter(function (d) {
+                return d.section === s.id;
+              });
+              h +=
+                '<div class="dsec"><span class="tag">' +
+                s.id +
+                "</span><h3>" +
+                esc(s.title) +
+                '</h3><span class="count">' +
+                list.length +
+                ' diagrams</span></div><div class="dgrid">';
+              list.forEach(function (d) {
+                var r = store.dg[d.id],
+                  meta = d.labels.length + " labels",
+                  cls = "dmeta";
+                if (r && r.last) {
+                  meta +=
+                    " · last round " +
+                    (r.last.miss === 0
+                      ? "perfect"
+                      : r.last.miss +
+                        " miss" +
+                        (r.last.miss === 1 ? "" : "es"));
+                  if (r.last.miss === 0) cls += " good";
+                }
+                h +=
+                  '<button type="button" class="dcard" data-act="dg-open" data-id="' +
+                  d.id +
+                  '" data-key="d-' +
+                  d.id +
+                  '">' +
+                  '<span class="dthumb"><img src="' +
+                  d.thumb +
+                  '" alt="" loading="lazy" width="420" height="' +
+                  Math.round((420 * d.h) / d.w) +
+                  '"></span>' +
+                  '<span class="dtitle">' +
+                  esc(d.title) +
+                  '</span><span class="' +
+                  cls +
+                  '">' +
+                  meta +
+                  "</span></button>";
+              });
+              h += "</div>";
+            });
+            h += "</section>";
+          });
+          return (
+            h +
+            '<div class="foot"><span>Progress is saved in this browser only.</span></div>'
+          );
+        }
+
+        /* ---------- game state ---------- */
+        var G = null,
+          dragG = null,
+          suppressClick = false;
+
+        function pickSubset(d) {
+          // Always all labels
+          return d.labels.slice();
+        }
+        function uniqueTexts(labels) {
+          var seen = {},
+            out = [];
+          labels.forEach(function (l) {
+            if (!seen[l.text]) {
+              seen[l.text] = 1;
+              out.push(l.text);
+            }
+          });
+          return out;
+        }
+        function startRound(d, fresh) {
+          var hidden = fresh || !G || G.d !== d ? pickSubset(d) : G.hidden;
+          G = {
+            d: d,
+            hidden: hidden,
+            placed: {},
+            shown: {},
+            misses: 0,
+            sel: null,
+            recorded: false,
+            order: shuffle(uniqueTexts(hidden)),
+          };
+        }
+        function gameShell(d) {
+          return (
+            '<div class="dg-top"><button type="button" class="link" data-act="dg-back" data-key="gback">&larr; Diagrams</button>' +
+            '<span class="eyebrow">Chapter 7 &middot; ' +
+            esc(d.section) +
+            " " +
+            esc(sectionTitle(d.section)) +
+            "</span></div>" +
+            '<h1 class="dg-title">' +
+            esc(d.title) +
+            "</h1>" +
+            '<p class="lede">Drag each label from the tray to its spot, or tap a label and then tap the spot. Labels that are not covered are already shown.</p>' +
+            '<div class="dg-bar" role="group" aria-label="Controls">' +
+            '<button type="button" class="btn small" data-act="dg-new" data-key="gnew">New round</button>' +
+            '<button type="button" class="btn ghost small" data-act="dg-reset" data-key="greset">Start over</button>' +
+            '<button type="button" class="btn ghost small" data-act="dg-show" data-key="gshow">Show answers</button>' +
+            '<span class="dg-spacer"></span><span class="dg-score" id="gScore"></span></div>' +
+            '<div class="dg-meter" aria-hidden="true"><i id="gMeter"></i></div>' +
+            '<div class="dg-board"><div class="dg-traywrap"><section class="tray" aria-labelledby="gTrayH"><h2 id="gTrayH">Labels <small id="gCount"></small></h2>' +
+            '<div class="dg-sortrow"><button type="button" class="link" data-act="dg-shuffle" data-key="gsh">Shuffle</button><button type="button" class="link" data-act="dg-az" data-key="gaz">A&ndash;Z</button></div>' +
+            '<ul class="tiles" id="gTiles"></ul><p class="tray-empty" id="gEmpty" hidden>No labels left.</p><p class="dg-status" id="gStatus" role="status" aria-live="polite"></p></section></div>' +
+            '<div class="dg-stagewrap"><p class="dg-hint">Swipe the diagram sideways to reach every spot.</p><div class="stage"><div class="fig" id="gFig"></div></div></div></div>' +
+            '<section class="dg-done" id="gDone" hidden><h2 id="gDoneH"></h2><p id="gDoneP"></p><div class="row">' +
+            '<button type="button" class="btn" data-act="dg-new" data-key="gagain">New round</button>' +
+            '<button type="button" class="btn ghost" data-act="dg-back" data-key="gback2">Back to diagrams</button></div></section>' +
+            '<p class="credit">' +
+            DCREDIT +
+            "</p>"
+          );
+        }
+
+        var gZones = {};
+        function mountGame(d) {
+          view = "dgame";
+          wrapEl.classList.add("wide");
+          app.innerHTML = gameShell(d);
+          var fig = document.getElementById("gFig");
+          var img = document.createElement("img");
+          img.src = d.image;
+          img.alt =
+            d.title +
+            ". The text of the covered labels is hidden for the exercise.";
+          img.width = d.w;
+          img.height = d.h;
+          img.draggable = false;
+          fig.appendChild(img);
+          gZones = {};
+          G.hidden
+            .slice()
+            .sort(function (a, b) {
+              return a.y - b.y || a.x - b.x;
+            })
+            .forEach(function (l, i, arr) {
+              var z = document.createElement("button");
+              z.type = "button";
+              z.className = "zone" + (l.align === "left" ? " left" : "");
+              z.dataset.id = l.id;
+              z.style.left = (l.x / d.w) * 100 + "%";
+              z.style.top = (l.y / d.h) * 100 + "%";
+              z.style.width = (l.w / d.w) * 100 + "%";
+              z.style.height = (l.h / d.h) * 100 + "%";
+              z.style.background = l.bg;
+              z.style.fontSize = (l.fs / d.w) * 100 + "cqw";
+              z.style.lineHeight = l.lhr;
+              z.setAttribute(
+                "aria-label",
+                "Empty label spot " + (i + 1) + " of " + arr.length,
+              );
+              fig.appendChild(z);
+              gZones[l.id] = z;
+            });
+          bindGame(fig, document.getElementById("gTiles"));
+          gRender();
+          window.scrollTo(0, 0);
+        }
+        function gSay(msg, kind) {
+          var s = document.getElementById("gStatus");
+          if (!s) return;
+          s.textContent = msg;
+          s.className = "dg-status" + (kind ? " " + kind : "");
+        }
+        function gPlacedCount() {
+          return Object.keys(G.placed).length;
+        }
+        function gRenderZones() {
+          G.hidden.forEach(function (l) {
+            var z = gZones[l.id],
+              isP = !!G.placed[l.id],
+              isS = !!G.shown[l.id];
+            z.classList.toggle("placed", isP);
+            z.classList.toggle("shown", isS && !isP);
+            z.classList.toggle("target", !!G.sel && !isP && !isS);
+            z.textContent = isP || isS ? l.disp : "";
+            z.disabled = isP || isS;
+            if (isP || isS) z.setAttribute("aria-label", l.text);
+          });
+        }
+        function gRemaining() {
+          var left = {};
+          G.hidden.forEach(function (l) {
+            if (!G.placed[l.id] && !G.shown[l.id])
+              left[l.text] = (left[l.text] || 0) + 1;
+          });
+          return left;
+        }
+        function gRenderTray() {
+          var ul = document.getElementById("gTiles");
+          ul.innerHTML = "";
+          var left = gRemaining(),
+            shownTiles = 0;
+          G.order.forEach(function (t) {
+            if (!left[t]) return;
+            var li = document.createElement("li"),
+              b = document.createElement("button");
+            b.type = "button";
+            b.className = "tile";
+            b.dataset.text = t;
+            b.setAttribute("aria-pressed", G.sel === t ? "true" : "false");
+            var span = document.createElement("span");
+            span.textContent = t;
+            b.appendChild(span);
+            if (left[t] > 1) {
+              var x = document.createElement("span");
+              x.className = "x2";
+              x.textContent = "×" + left[t];
+              b.appendChild(x);
+            }
+            li.appendChild(b);
+            ul.appendChild(li);
+            shownTiles++;
+          });
+          var total = Object.keys(left).reduce(function (s, k) {
+            return s + left[k];
+          }, 0);
+          document.getElementById("gCount").textContent = total + " left";
+          document.getElementById("gEmpty").hidden = shownTiles > 0;
+        }
+        function gRenderMeta() {
+          var p = gPlacedCount(),
+            n = G.hidden.length;
+          document.getElementById("gScore").innerHTML =
+            "<b>" +
+            p +
+            "</b> of " +
+            n +
+            " placed &middot; <b>" +
+            G.misses +
+            "</b> miss" +
+            (G.misses === 1 ? "" : "es");
+          document.getElementById("gMeter").style.width = (p / n) * 100 + "%";
+          var all = p + Object.keys(G.shown).length >= n,
+            won = p === n;
+          document.getElementById("gDone").hidden = !all;
+          if (all) {
+            document.getElementById("gDoneH").textContent = won
+              ? "All labels placed"
+              : "Answers shown";
+            document.getElementById("gDoneP").textContent = won
+              ? G.misses === 0
+                ? "No misses. Every label went to the right spot on the first try."
+                : G.misses +
+                  " miss" +
+                  (G.misses === 1 ? "" : "es") +
+                  " along the way. Start a new round to try again."
+              : "Start a new round to test yourself.";
+            if (won && !G.recorded) {
+              G.recorded = true;
+              var prev = store.dg[G.d.id] || { rounds: 0 };
+              store.dg[G.d.id] = {
+                rounds: prev.rounds + 1,
+                last: { n: n, miss: G.misses },
+              };
+              persist();
+            }
+          }
+
+        }
+        function gRender() {
+          gRenderZones();
+          gRenderTray();
+          gRenderMeta();
+        }
+
+        function gFlash(el) {
+          if (!el) return;
+          el.classList.remove("bad");
+          void el.offsetWidth;
+          el.classList.add("bad");
+          setTimeout(function () {
+            el.classList.remove("bad");
+          }, 400);
+        }
+        function gAttempt(text, zoneId) {
+          if (!G || G.placed[zoneId] || G.shown[zoneId]) return;
+          var label = null;
+          G.hidden.forEach(function (l) {
+            if (l.id === zoneId) label = l;
+          });
+          if (!label) return;
+          if (label.text === text) {
+            G.placed[zoneId] = true;
+            G.sel = null;
+            gSay("Correct: " + text, "ok");
+            gRender();
+          } else {
+            G.misses++;
+            gSay(
+              "Not that one. Follow the line or bracket from this spot.",
+              "no",
+            );
+            gRenderMeta();
+            gFlash(gZones[zoneId]);
+            var tiles = document.querySelectorAll("#gTiles .tile");
+            Array.prototype.forEach.call(tiles, function (t) {
+              if (t.dataset.text === text) gFlash(t);
+            });
+          }
+        }
+
+        /* ---------- tray interaction: drag, or tap then tap ---------- */
+        function zoneAt(x, y) {
+          var els = document.elementsFromPoint(x, y);
+          for (var i = 0; i < els.length; i++) {
+            var el = els[i];
+            if (
+              el.classList &&
+              el.classList.contains("zone") &&
+              !el.classList.contains("placed") &&
+              !el.classList.contains("shown")
+            )
+              return el;
+          }
+          return null;
+        }
+        function clearHot() {
+          Object.keys(gZones).forEach(function (k) {
+            gZones[k].classList.remove("hot");
+          });
+        }
+        function endDrag() {
+          if (!dragG) return;
+          if (dragG.ghost && dragG.ghost.parentNode)
+            dragG.ghost.parentNode.removeChild(dragG.ghost);
+          if (dragG.tile) dragG.tile.classList.remove("dragging");
+          clearHot();
+          dragG = null;
+        }
+        function bindGame(fig, tiles) {
+          tiles.addEventListener("pointerdown", function (e) {
+            var t = e.target.closest(".tile");
+            if (!t || (e.pointerType === "mouse" && e.button !== 0)) return;
+            dragG = {
+              text: t.dataset.text,
+              tile: t,
+              sx: e.clientX,
+              sy: e.clientY,
+              moved: false,
+              ghost: null,
+              pid: e.pointerId,
+            };
+            try {
+              t.setPointerCapture(e.pointerId);
+            } catch (err) {}
+          });
+          tiles.addEventListener("pointermove", function (e) {
+            if (!dragG || e.pointerId !== dragG.pid) return;
+            if (!dragG.moved) {
+              if (Math.hypot(e.clientX - dragG.sx, e.clientY - dragG.sy) < 6)
+                return;
+              dragG.moved = true;
+              var g = dragG.tile.cloneNode(true);
+              g.classList.add("dragghost");
+              g.removeAttribute("aria-pressed");
+              g.style.width = dragG.tile.getBoundingClientRect().width + "px";
+              document.body.appendChild(g);
+              dragG.ghost = g;
+              dragG.tile.classList.add("dragging");
+              G.sel = null;
+              gRenderZones();
+            }
+            dragG.ghost.style.transform =
+              "translate(" +
+              (e.clientX - 24) +
+              "px," +
+              (e.clientY - 20) +
+              "px)";
+            clearHot();
+            var z = zoneAt(e.clientX, e.clientY);
+            if (z) z.classList.add("hot");
+          });
+          tiles.addEventListener("pointerup", function (e) {
+            if (!dragG || e.pointerId !== dragG.pid) return;
+            var d = dragG,
+              moved = d.moved,
+              z = moved ? zoneAt(e.clientX, e.clientY) : null;
+            endDrag();
+            if (moved) {
+              suppressClick = true;
+              setTimeout(function () {
+                suppressClick = false;
+              }, 0);
+              if (z) gAttempt(d.text, z.dataset.id);
+              else gSay("Drop the label on one of the dashed spots.");
+            }
+          });
+          tiles.addEventListener("pointercancel", endDrag);
+          tiles.addEventListener("click", function (e) {
+            var t = e.target.closest(".tile");
+            if (!t || suppressClick) return;
+            G.sel = G.sel === t.dataset.text ? null : t.dataset.text;
+            gSay(G.sel ? "Now tap or press the spot for “" + G.sel + "”." : "");
+            gRenderZones();
+            gRenderTray();
+            if (G.sel) {
+              var again = Array.prototype.filter.call(
+                document.querySelectorAll("#gTiles .tile"),
+                function (x) {
+                  return x.dataset.text === G.sel;
+                },
+              )[0];
+              if (again) again.focus({ preventScroll: true });
+            }
+          });
+          fig.addEventListener("click", function (e) {
+            var z = e.target.closest(".zone");
+            if (!z || z.disabled) return;
+            if (!G.sel) {
+              gSay("Pick a label from the tray first.");
+              return;
+            }
+            gAttempt(G.sel, z.dataset.id);
+          });
+        }
+
+        /* ---------- navigation and controls ---------- */
+        function leaveGame() {
+          endDrag();
+          G = null;
+          wrapEl.classList.remove("wide");
+        }
+        app.addEventListener("click", function (e) {
+          var el = e.target.closest("[data-act]");
+          if (!el || el.disabled) return;
+          var act = el.dataset.act;
+          if (act === "tab") {
+            if (el.dataset.tab === "d") {
+              view = "dhome";
+              store.tab = "d";
+            } else if (el.dataset.tab === "m") {
+              view = "mhome";
+              store.tab = "m";
+            } else {
+              view = "dhome";
+              store.tab = "q";
+            }
+            persist();
+            render();
+            window.scrollTo(0, 0);
+          } else if (act === "match-check") {
+            e.preventDefault();
+            var id = el.dataset.id;
+            var i = matchSel.indexOf(id);
+            if (i >= 0) matchSel.splice(i, 1);
+            else matchSel.push(id);
+            render();
+          } else if (act === "match-clear") {
+            matchSel = [];
+            render();
+          } else if (act === "match-start-sel") {
+            if (!matchSel.length) return;
+            matchQueue = matchSel.slice();
+            matchQueueIndex = 0;
+            currentMatch = matchQueue[0];
+            view = "match";
+            render();
+            window.scrollTo(0, 0);
+            setTimeout(initMatchBoard, 0);
+          } else if (act === "match-open") {
+            matchQueue = [el.dataset.id];
+            matchQueueIndex = 0;
+            currentMatch = el.dataset.id;
+            view = "match";
+            render();
+            window.scrollTo(0, 0);
+            setTimeout(initMatchBoard, 0);
+          } else if (act === "match-back") {
+            view = "mhome";
+            currentMatch = null;
+            matchQueue = [];
+            render();
+            window.scrollTo(0, 0);
+          } else if (act === "match-next") {
+            if (matchQueueIndex < matchQueue.length - 1) {
+              matchQueueIndex++;
+              currentMatch = matchQueue[matchQueueIndex];
+              render();
+              setTimeout(initMatchBoard, 0);
+            } else {
+              view = "mhome";
+              currentMatch = null;
+              matchQueue = [];
+              render();
+            }
+            window.scrollTo(0, 0);
+          } else if (act === "match-reset") {
+            render();
+            setTimeout(initMatchBoard, 0);
+          } else if (act === "match-show") {
+            document.querySelectorAll(".m-card").forEach(function (c) {
+              if (!c.classList.contains("matched")) {
+                c.classList.add("matched");
+                c.draggable = false;
+              }
+            });
+            document.querySelectorAll(".m-zone").forEach(function (z) {
+              if (!z.classList.contains("filled")) {
+                z.classList.add("filled", "matched");
+                z.innerHTML = "<strong>" + z.dataset.correct + "</strong><br><span style='font-weight:400;color:var(--muted)'>" + z.dataset.def + "</span>";
+              }
+            });
+            var st = document.getElementById("m-status");
+            if (st) st.textContent = "Answers shown";
+          } else if (act === "dg-open") {
+            var d = DBY[el.dataset.id];
+            if (!d) return;
+            startRound(d, true);
+            mountGame(d);
+          } else if (act === "dg-back") {
+            leaveGame();
+            view = "dhome";
+            render();
+            window.scrollTo(0, 0);
+          } else if (act === "dg-new") {
+            startRound(G.d, true);
+            mountGame(G.d);
+          } else if (act === "dg-reset") {
+            startRound(G.d, false);
+            mountGame(G.d);
+          } else if (act === "dg-show") {
+            G.hidden.forEach(function (l) {
+              if (!G.placed[l.id]) G.shown[l.id] = true;
+            });
+            G.sel = null;
+            gSay("Answers shown. They do not count as placed.");
+            gRender();
+          } else if (act === "dg-shuffle") {
+            G.order = shuffle(G.order);
+            gRenderTray();
+          } else if (act === "dg-az") {
+            G.order = G.order.slice().sort(function (a, b) {
+              return a.localeCompare(b);
+            });
+            gRenderTray();
+          }
+        });
+        if (store.tab === "d") view = "dhome";
+        if (store.tab === "m") view = "mhome";
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
